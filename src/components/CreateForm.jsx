@@ -7,7 +7,6 @@ const CreateForm = (props) => {
         nomeCompleto: '',
         idade: '',
         aposentado: '',
-        possuiEmprestimo: '',
         saude: '',
     }
 
@@ -24,8 +23,9 @@ const CreateForm = (props) => {
     }
 
     const handleFormSubmit = (e) => {
-      
-  }
+      e.preventDefault();
+      props.addEdit(values);
+    }
 
     return (
       <form autoComplete="off" onSubmit={handleFormSubmit}>
@@ -68,7 +68,7 @@ const CreateForm = (props) => {
         </div>
 
         <div className="form-group mt-2">
-          <input type="submit" value={props.currentId == '' ? "Salvar" : "Atualizar"} className="btn btn-primary btn-block" />
+          <input type="submit" value="Salvar" className="btn btn-primary btn-block" />
         </div>
 
       </form>

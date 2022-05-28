@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CreateForm from './CreateForm';
-import app from '../database/firebase';
+import app from '../database/firebase-app';
 
 const Create = () => {
+
+  const [dadosIdosos, setDadosIdosos] = useState({});
+
+  useEffect (() => {
+    app.child('idosos').on('value', dbSnapshot => {
+      if (dbSnapshot.val() != null) {
+        setDadosIdosos ({
+          ...dbSnapshot.val()
+        })
+      }
+    })
+  }, [])
 
   const addEdit = (obj) => {
     app.child('idosos').push(
@@ -26,8 +38,28 @@ const Create = () => {
         <div className="col-md-6">
           <CreateForm />
         </div>
-        <div>
-            <h2>Lista de pacientes</h2>
+        <div className="col-md-7">
+            <table className="table table-boderless table-stripped">
+              <thead className="thead-light">
+                <tr>
+                  <td>Nome Completo</td>
+                  <td>Idade</td>
+                  <td>Aposentado</td>
+                  <td>Saude</td>
+                </tr>
+              </thead>
+
+              <tbody>
+                { Object.keys(dadosIdosos).map(id => {
+                  return <tr key={id}>
+                            <td> {dadosIdosos[id].nomeCompleto}</td>
+                            <td> {dadosIdosos[id].idade}</td>
+                            <td> {dadosIdosos[id].aposentado}</td>
+                            <td> {dadosIdosos[id].saude}</td>
+                          </tr>
+                }) }
+              </tbody>
+            </table>
         </div>
     </div>
 

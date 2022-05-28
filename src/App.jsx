@@ -1,5 +1,6 @@
-import './App.css'
-import Create from './components/Create'
+import './App.css';
+import Create from './components/Create';
+
 
 function App() {
 
