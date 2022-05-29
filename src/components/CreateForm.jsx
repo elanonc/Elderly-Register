@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Create from './Create';
+import React, { useState, useEffect } from 'react';
 
 const CreateForm = (props) => {
 
@@ -13,6 +12,19 @@ const CreateForm = (props) => {
     
     let [values, setValues] = useState(initialValues);
 
+    useEffect( () => {
+      if(props.currentId === '') {
+          setValues({
+              ...initialValues
+          })
+      } else {
+          setValues({
+              ...props.dadosIdosos[props.currentId]
+          })
+      }
+    }, [props.currentId, props.dadosIdosos] )
+
+
     const handleInputChange = (e) => {
         let {name, value} = e.target;
 
@@ -24,11 +36,12 @@ const CreateForm = (props) => {
 
     const handleFormSubmit = (e) => {
       e.preventDefault();
+      e.target.reset();
       props.addEdit(values);
     }
-
+    
     return (
-      <form autoComplete="off" onSubmit={handleFormSubmit}>
+      <form id="elderly-form" autoComplete="off" onSubmit={handleFormSubmit}>
          <div className="form-group input-group">
                 <div className="input-group-prepend">
                     <div className="input-group-text">
@@ -39,36 +52,42 @@ const CreateForm = (props) => {
                        value={values.nomeCompleto} onChange={handleInputChange} />
           </div>
 
-        <div className="row">
+        <div className="form-row">
 
-        <div className="form-group input-group col-md-6">
-            <div className="input-group-prepend">
-                    <div className="input-group-text">
-                        <i className="fas fa-mobile-alt"></i>
-                    </div>
+          <div className="form-group input-group col-md-6">
+              <div className="input-group-prepend">
+                      <div className="input-group-text">
+                          <i className="fas fa-mobile-alt"></i>
+                      </div>
+              </div>
+                <input className="form-control" placeholder="Idade" name="idade" 
+                defaultValue={values.idade} onChange={handleInputChange} />
             </div>
-              <input className="form-control" placeholder="Idade" name="idade" 
-              defaultValue={values.idade} onChange={handleInputChange} />
-          </div>
 
-            <div className="form-group input-group col-md-6">
+          <div className="form-group input-group col-md-6">
               <div className="input-group-prepend">
                       <div className="input-group-text">
                           <i className="fas fa-envelope"></i>
                       </div>
               </div>
-                <input className="form-control" placeholder="Aposentado" name="aposentado" 
-                defaultValue={values.aposentado} onChange={handleInputChange}/>
-            </div>
+                <select className="form-control" placeholder="Aposentado" name="aposentado" 
+                        defaultValue={values.aposentado} onChange={handleInputChange}>
+                  <option value="Sim">Sim</option>
+                  <option value="Não">Não</option>
+                  <option value=""></option>
+                </select>
+              </div>
 
         </div>
 
         <div className="form-group">
-          <textarea className="form-control" name="saude" placeholder="Disserte sobre a saúde do idoso" onChange={handleInputChange}></textarea>
+          <textarea className="form-control" name="saude" placeholder="Disserte sobre a saúde do idoso" 
+                    onChange={handleInputChange}/>
         </div>
 
         <div className="form-group mt-2">
-          <input type="submit" value="Salvar" className="btn btn-primary btn-block" />
+          <input type="submit" value={props.currentId === '' ? "Salvar" : "Atualizar"} 
+                className="btn btn-primary btn-block" />
         </div>
 
       </form>

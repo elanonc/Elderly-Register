@@ -5,8 +5,8 @@ import Create from './components/Create';
 function App() {
 
   return (
-    <div className="row">
-        <div className="col-md-8 offset-md-2">
+    <div className="row justify-content-md-center">
+        <div className="col-md-10">
           <Create />
         </div>
     </div>
